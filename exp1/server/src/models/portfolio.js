@@ -3,7 +3,18 @@ import mongoose from "mongoose";
 const portfolioSchema = mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    bio: { type: String },
+    shareId: { type: String, unique: true, sparse: true },
+    bio: {
+      name: { type: String },
+      title: { type: String },
+      description: { type: String },
+      story: { type: String },
+      additional: { type: String },
+      experience: { type: String },
+      location: { type: String },
+      education: { type: String },
+      availability: { type: String },
+    },
     skills: [{ type: String }],
     projects: [
       {
@@ -13,9 +24,12 @@ const portfolioSchema = mongoose.Schema(
       },
     ],
     contact: {
-      phone: String,
-      github: String,
-      linkedin: String,
+      email: { type: String },
+      phone: { type: String },
+      location: { type: String },
+      github: { type: String },
+      linkedin: { type: String },
+      twitter: { type: String },
     },
   },
   { timestamps: true }

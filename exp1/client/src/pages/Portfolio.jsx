@@ -12,6 +12,8 @@ const Portfolio = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(false);
+  const [shareLink, setShareLink] = useState(null);
+  const [generatingLink, setGeneratingLink] = useState(false);
 
   useEffect(() => {
     fetchPortfolio();
@@ -109,6 +111,23 @@ const Portfolio = () => {
     );
   }
 
+  const generateShareLink = async () => {
+    try {
+      setGeneratingLink(true);
+      const response = await api.post('/api/portfolio/generate-share-id');
+      const { shareId } = response.data;
+
+      // Build the full public link (adjust base URL as per deployment)
+      const link = `${window.location.origin}/portfolio/public/${shareId}`;
+      setShareLink(link);
+    } catch (err) {
+      console.error('Error generating share link:', err);
+      alert('Failed to generate share link. Please try again.');
+    } finally {
+      setGeneratingLink(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
       <Navbar />
@@ -135,6 +154,39 @@ const Portfolio = () => {
               </>
             )}
           </button>
+
+          {/* Share button */}
+          {/* <button
+            onClick={generateShareLink}
+            className="btn btn-secondary btn-sm shadow-lg w-full"
+            disabled={generatingLink}
+          >
+            {generatingLink ? (
+              <>
+                <span className="loading loading-spinner loading-sm"></span>
+                Generating...
+              </>
+            ) : (
+              'Share My Portfolio'
+            )}
+          </button> */}
+
+          {/* Show share link if generated */}
+          {/* {shareLink && (
+          <div className="mt-2 p-2 bg-base-200 rounded shadow text-xs break-all">
+            <p className="mb-1 font-semibold">Your Share Link:</p>
+            <a href={shareLink} target="_blank" rel="noopener noreferrer" className="text-primary underline">
+              {shareLink}
+            </a>
+            <button
+              onClick={() => navigator.clipboard.writeText(shareLink)}
+              className="btn btn-xs btn-outline ml-2"
+            >
+              Copy
+            </button>
+          </div>
+          )} */}
+          
         </div>
       )}
 
