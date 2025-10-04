@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+
+:root {
+  --accent: #008080; /* teal accent for trust and clarity */
+  --accent-light: #e0f7fa;
+}
+
+body {
+  background-color: theme('colors.base.200');
+  color: theme('colors.base.content');
+}
